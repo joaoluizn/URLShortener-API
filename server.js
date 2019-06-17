@@ -42,7 +42,6 @@ app.get('/', function(req, res){
   
 // Generate new URL
 app.post("/api/shorturl/new", (req, res) => {
-  
   var protocolPattern = /^https?:\/\/(.*)/i;
   let url = req.body.url;
   
@@ -77,7 +76,7 @@ app.post("/api/shorturl/new", (req, res) => {
   });
 });
 
-
+// Search and redirect to original url
 app.get("/api/shorturl/:hash", (req, res) => {
   UrlModel.findOne({hash: req.params.hash}, (err, data) => {
     if (err){
@@ -85,9 +84,8 @@ app.get("/api/shorturl/:hash", (req, res) => {
     }
     if (data){
       res.redirect("http://" + data.url);
-    } else {
-      res.json({"error":"No short url found for given input"});
     }
+    res.json({"error":"No short url found for given input"});
   })  
 });
 
